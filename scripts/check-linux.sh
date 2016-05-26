@@ -43,7 +43,7 @@ done
 
 if [ -n "$missing_deps" ]; then
   # Check if we should auto-install dependencies
-  if [ $install_deps -eq true ]; then
+  if [ "$install_deps" -eq true ]; then
     # Uses sudo command, may result in a user prompt
     sudo apt-get update -qq
     sudo apt-get -y install$missing_deps
