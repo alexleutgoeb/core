@@ -26,18 +26,22 @@ BOOST_VERSION="1.57.0" # 1.59.0 is not working for cc
 PYTHON_VERSION="2.7"
 
 OUTPUT_IO=/dev/null
+MINGW_DIR=/opt/mingw32
+HOST_PREFIX=i686-w64-mingw32
 
 # Check parameters
 while [ "$1" != "" ]; do
   case $1 in
     --verbose )     OUTPUT_IO=/dev/stdout
-                    set -v
+                    # set -v
                     ;;
   esac
   shift
 done
 
 # Environment
+cat >$HOME/mingw << 'EOF'
+#!/bin/sh
 HOST_PREFIX=i686-w64-mingw32
 MINGW_DIR=/opt/mingw32
 export CC=$HOST_PREFIX-gcc
@@ -45,6 +49,9 @@ export CXX=$HOST_PREFIX-g++
 export CPP=$HOST_PREFIX-cpp
 export RANLIB=$HOST_PREFIX-ranlib
 export PATH="$MINGW_DIR/bin:$PATH"
+exec "$@"
+EOF
+chmod u+x $HOME/mingw
 
 pushd /tmp
 
@@ -61,15 +68,15 @@ popd
 wget http://www.bzip.org/$BZIP_VERSION/bzip2-$BZIP_VERSION.tar.gz &> $OUTPUT_IO
 tar xzf bzip2-$BZIP_VERSION.tar.gz &> $OUTPUT_IO
 pushd bzip2-$BZIP_VERSION
-make &> $OUTPUT_IO
-sudo PATH="$MINGW_DIR/bin:$PATH" make install PREFIX=$MINGW_DIR &> $OUTPUT_IO
+$HOME/mingw make &> $OUTPUT_IO
+sudo $HOME/mingw make install PREFIX=$MINGW_DIR &> $OUTPUT_IO
 popd
 
 # Install Python
 wget https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/4.9.2/threads-posix/dwarf/i686-4.9.2-release-posix-dwarf-rt_v3-rev1.7z
-7z x i686-4.9.2-release-posix-dwarf-rt_v3-rev1.7z -o/opt/ mingw32/opt/include/python2.7 mingw32/opt/bin/python* -r
+sudo 7z x i686-4.9.2-release-posix-dwarf-rt_v3-rev1.7z -o/opt/ mingw32/opt/include/python2.7 mingw32/opt/bin/python* -r
 # Python hack for getting correct python config vars for auto ools
-chmod +x $MINGW_DIR/opt/bin/python-config.sh
+sudo chmod +x $MINGW_DIR/opt/bin/python-config.sh
 sudo rm -f /usr/local/bin/python-config
 sudo ln -s $MINGW_DIR/opt/bin/python-config.sh /usr/local/bin/python-config
 
@@ -77,7 +84,7 @@ sudo ln -s $MINGW_DIR/opt/bin/python-config.sh /usr/local/bin/python-config
 # (the one from mingw toolchain requires other dependencies)
 wget https://bitbucket.org/carlkl/mingw-w64-for-python/downloads/libpython-cp27-none-win32.7z
 7z x libpython-cp27-none-win32.7z
-mv libs/libpython27.dll.a $MINGW_DIR/lib/libpython2.7.a
+sudo mv libs/libpython27.dll.a $MINGW_DIR/lib/libpython2.7.a
 
 # TODO: Build Boost
 

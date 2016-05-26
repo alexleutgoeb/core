@@ -26,7 +26,7 @@ OUTPUT_IO=/dev/null
 while [ "$1" != "" ]; do
   case $1 in
     --verbose )     OUTPUT_IO=/dev/stdout
-                    set -v
+                    # set -v
                     ;;
   esac
   shift
