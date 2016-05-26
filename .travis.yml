@@ -14,14 +14,14 @@ matrix:
       env: BUILDTYPE=osx
 
 before_install:
-  - if [ $BUILDTYPE == linux ]; then sudo apt-get update -qq fi
-  - if [ $BUILDTYPE == linux ]; then sudo apt-get -y install sed git build-essential autoconf autotools-dev libtool wget scons bison re2c libboost-all-dev python-dev libpython-all-dev libcurl4-openssl-dev libbz2-dev fi
+  - if [ $BUILDTYPE == linux ]; then sudo apt-get update -qq; fi
+  - if [ $BUILDTYPE == linux ]; then sudo apt-get -y install sed git build-essential autoconf autotools-dev libtool wget scons bison re2c libboost-all-dev python-dev libpython-all-dev libcurl4-openssl-dev libbz2-dev; fi
 
 script:
   - export PYTHON_BIN=python2.7
-  - if [ $BUILDTYPE == linux ]; then ./bootstrap.sh fi
-  - if [ $BUILDTYPE == linux ]; then  ./configure CXXFLAGS=-fPIC LOCAL_PLUGIN_DIR=plugins --enable-python --enable-shared=no --enable-static-boost fi
-  - if [ $BUILDTYPE == linux ]; then make fi
+  - if [ $BUILDTYPE == linux ]; then ./bootstrap.sh; fi
+  - if [ $BUILDTYPE == linux ]; then  ./configure CXXFLAGS=-fPIC LOCAL_PLUGIN_DIR=plugins --enable-python --enable-shared=no --enable-static-boost; fi
+  - if [ $BUILDTYPE == linux ]; then make; fi
 
 after_failure:
-  - if [ $BUILDTYPE == linux ]; then cat config.log fi
+  - if [ $BUILDTYPE == linux ]; then cat config.log; fi
