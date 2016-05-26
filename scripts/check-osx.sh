@@ -2,25 +2,25 @@
 set -e
 
 ################################################################################
-# check-linux.sh
+# check-osx.sh
 #
 # Author: Alex Leutgöb <alexleutgoeb@gmail.com>
 #
 # Run this script to check if all dependencies are met for building DLVHEX on
-# Ubuntu Linux.
+# Mac OS X.
 #
 # Parameters:
 #
 # --install-dependencies
 #
-#   If set required dependencies are automatically installed via apt-get. Please
-#   note that the script may need root permissions and will prompt you for that.
+#   If set required dependencies are automatically installed via homebrew.
 #
 ################################################################################
 
 
 # List of required dependencies
-deps="sed git build-essential autoconf autotools-dev libtool wget scons bison re2c libboost-all-dev python-dev libpython-all-dev libcurl4-openssl-dev libbz2-dev"
+deps="git autoconf automake libtool pkg-config wget scons bison re2c python"
+# TODO: Bison is always found on Mac OS X, so we have to check for min version too!
 
 # Used to temporarily save missing dependencies
 missing_deps=""
@@ -36,7 +36,7 @@ done
 
 # Check for dependencies
 for dep in `echo $deps`; do
-  if ! dpkg -s $dep &> /dev/null; then
+  if ! which $dep &> /dev/null; then
     missing_deps="$missing_deps $dep"
   fi
 done
@@ -44,13 +44,12 @@ done
 if [ -n "$missing_deps" ]; then
   # Check if we should auto-install dependencies
   if [ "$install_deps" -eq 1 ]; then
-    # Uses sudo command, may result in a user prompt
     echo "Installing dependencies..."
-    sudo apt-get update -qq
-    sudo apt-get -y install$missing_deps
+    brew update
+    brew install$missing_deps
   else
     echo "Error: Missing build dependencies, use:"
-    echo "apt-get update && apt-get install$missing_deps"
+    echo "brew install$missing_deps"
     exit 1
   fi
 else
