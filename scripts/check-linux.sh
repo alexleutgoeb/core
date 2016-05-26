@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 set -e
 
 ################################################################################
@@ -14,7 +14,7 @@ set -e
 # --install-dependencies
 #
 #   If set required dependencies are automatically installed via apt-get. Please
-#   note that the script may need root permissions for that.
+#   note that the script may need root permissions and will prompt you for that.
 #
 ################################################################################
 
@@ -26,7 +26,7 @@ deps="sed git build-essential autoconf autotools-dev libtool wget scons bison re
 missing_deps=""
 
 # Check parameters
-while [[ -n "$1" ]]; do
+while [ -n "$1" ]; do
   case $1 in
     --install-dependencies )    install_deps=true
                                 ;;
@@ -41,17 +41,12 @@ for dep in `echo $deps`; do
   fi
 done
 
-if [[ -n "$missing_deps" ]]; then
+if [ -n "$missing_deps" ]; then
   # Check if we should auto-install dependencies
-  if [[ $install_deps -eq true ]]; then
-    # Check for root permissions
-    if [[ $EUID -ne 0 ]]; then
-      echo "Error, can't install dependencies, please run as root user"
-      exit 1
-    else
-      apt-get update -qq
-      apt-get -y install$missing_deps
-    fi
+  if [ $install_deps -eq true ]; then
+    # Uses sudo command, may result in a user prompt
+    sudo apt-get update -qq
+    sudo apt-get -y install$missing_deps
   else
     echo "Error: Missing build dependencies, use:"
     echo "apt-get update && apt-get install$missing_deps"
