@@ -1,4 +1,4 @@
-language: cpp
+language: generic
 sudo: required
 dist: trusty
 
@@ -10,7 +10,7 @@ os:
 
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get -y install libboost-all-dev
+  - sudo apt-get -y install sed git build-essential autoconf autotools-dev libtool wget scons bison re2c libboost-all-dev python-dev libpython-all-dev libcurl4-openssl-dev libbz2-dev
 
 script:
   - export PYTHON_BIN=python2.7
