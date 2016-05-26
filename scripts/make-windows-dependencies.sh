@@ -100,9 +100,12 @@ echo "INCLUDE DIR:"
 ls -la $MINGW_DIR/include
 echo "LIB DIR:"
 ls -la $MINGW_DIR/lib
+echo "LOCAL BIN DIR:"
+ls -la /usr/local/bin
 echo "PYTHON CONFIG:"
 which python-config
 python-config --ldflags
+/usr/local/bin/python-config --ldflags
 $MINGW_DIR/bin/python-config.sh --ldflags
 
 # Build Boost
@@ -114,7 +117,7 @@ pushd boost_$boost_file_version
 # Set cross compiler and custom python path
 echo "using gcc : 4.8 : $HOST_PREFIX-g++ ;" > user-config.jam
 echo "using python : $PYTHON_VERSION : $MINGW_DIR/bin/python.exe : $MINGW_DIR/include/python2.7 : $MINGW_DIR/lib ;" >> user-config.jam
-./b2 -q --user-config=user-config.jam toolset=gcc target-os=windows threading=multi threadapi=win32 variant=release link=static runtime-link=static --without-context --without-coroutine install --prefix=$MINGW_DIR include=$MINGW_DIR/include  &> $OUTPUT_IO
+sudo ./b2 -q --user-config=user-config.jam toolset=gcc target-os=windows threading=multi threadapi=win32 variant=release link=static runtime-link=static --without-context --without-coroutine install --prefix=$MINGW_DIR include=$MINGW_DIR/include  &> $OUTPUT_IO
 popd
 
 popd
