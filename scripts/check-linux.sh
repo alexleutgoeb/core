@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 set -e
 
 ################################################################################
@@ -26,7 +26,7 @@ deps="sed git build-essential autoconf autotools-dev libtool wget scons bison re
 missing_deps=""
 
 # Check parameters
-while [ "$1" != "" ]; do
+while [[ -n "$1" ]]; do
   case $1 in
     --install-dependencies )    install_deps=true
                                 ;;
@@ -41,9 +41,9 @@ for dep in `echo $deps`; do
   fi
 done
 
-if [ ! -z "$missing_deps" ]; then
+if [[ -n "$missing_deps" ]]; then
   # Check if we should auto-install dependencies
-  if [[ $install_deps -e true ]]; then
+  if [[ $install_deps -eq true ]]; then
     # Check for root permissions
     if [[ $EUID -ne 0 ]]; then
       echo "Error, can't install dependencies, please run as root user"
