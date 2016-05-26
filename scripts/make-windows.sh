@@ -42,7 +42,7 @@ done
 
 # Set python version
 export PYTHON_BIN=python$PYTHON_VERSION &> $OUTPUT_IO
-export PYTHON_INCLUDE_DIR=$PYTHON_DIR/include/python2.7
+export PYTHON_INCLUDE_DIR=$MINGW_DIR/include/python2.7
 export PYTHON_LIB=python2.7
 
 # Environment
