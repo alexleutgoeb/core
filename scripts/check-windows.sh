@@ -20,7 +20,7 @@ set -e
 
 
 # List of required dependencies
-deps="sed git build-essential autoconf libtool wget pkg-config scons bison re2c p7zip-full python-dev libxml2-dev libxslt1-dev ccze mingw-w64"
+deps="sed git build-essential autoconf libtool wget pkg-config scons bison re2c p7zip-full python-dev libxml2-dev libxslt1-dev ccze mingw64-x-binutils mingw64-x-gcc mingw64-x-runtime mingw64-x-zlib mingw64-x-openssl"
 
 # Used to temporarily save missing dependencies
 missing_deps=""
@@ -46,10 +46,12 @@ if [ -n "$missing_deps" ]; then
   if [ "$install_deps" -eq 1 ]; then
     # Uses sudo command, may result in a user prompt
     echo "Installing dependencies..."
+    sudo add-apt-repository -y ppa:tobydox/mingw-x-trusty
     sudo apt-get update -qq
     sudo apt-get -y install$missing_deps
   else
     echo "Error: Missing build dependencies, use:"
+    echo "  add-apt-repository -y ppa:tobydox/mingw-x-trusty"
     echo "  apt-get update && apt-get install$missing_deps"
     exit 1
   fi
@@ -60,7 +62,7 @@ fi
 # Check for cross-compilation libs
 if [ "$install_deps" -eq 1 ]; then
   echo "Building Windows libraries from source..."
-  ./make-windows-dependencies.sh
+  ./scripts/make-windows-dependencies.sh
 else
   echo "Make sure to run make-windows-dependencies.sh before creating the build"
 fi

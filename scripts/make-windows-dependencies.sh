@@ -20,15 +20,12 @@ set -e
 
 
 # Config vars
-ZLIB_VERSION="1.2.8"
-OPENSSL_VERSION="1.0.2g"
 CURL_VERSION="7.46.0"
 BZIP_VERSION="1.0.6"
 BOOST_VERSION="1.57.0" # 1.59.0 is not working for cc
 PYTHON_VERSION="2.7"
 
 OUTPUT_IO=/dev/null
-MINGW_DIR=/usr/i686-w64-mingw32
 
 # Check parameters
 while [ "$1" != "" ]; do
@@ -40,19 +37,28 @@ while [ "$1" != "" ]; do
   shift
 done
 
+# Environment
+PREFIX=x86_64-w64-mingw32
+MINGW_DIR=/opt/mingw64
+export CC=$PREFIX-gcc
+export CXX=$PREFIX-g++
+export CPP=$PREFIX-cpp
+export RANLIB=$PREFIX-ranlib
+export PATH="$MINGW_DIR/bin:$PATH"
 
-# Build zlib
-wget http://zlib.net/zlib-$ZLIB_VERSION.tar.gz &> $OUTPUT_IO
-tar xzf zlib-$ZLIB_VERSION.tar.gz &> $OUTPUT_IO
-mv zlib-$ZLIB_VERSION zlib
-pushd zlib
-./configure &> $OUTPUT_IO
-make libz.a &> $OUTPUT_IO
-# Manually install (requird libc for exe not available with mingw-w64):
-mkdir -p $MINGW_DIR/include &> $OUTPUT_IO
-mkdir -p $MINGW_DIR/lib &> $OUTPUT_IO
-cp zconf.h zlib.h $MINGW_DIR/include &> $OUTPUT_IO
-cp libz.a $MINGW_DIR/lib &> $OUTPUT_IO
+pushd /tmp
+
+# Build curl
+wget http://curl.haxx.se/download/curl-$CURL_VERSION.tar.gz &> $OUTPUT_IO
+tar xzf curl-$CURL_VERSION.tar.gz &> $OUTPUT_IO
+pushd curl-$CURL_VERSION
+./configure --host=$PREFIX --prefix=$MINGW_DIR --enable-static=yes --enable-shared=no --with-zlib=$MINGW_DIR --with-ssl=$MINGW_DIR &> $OUTPUT_IO
+make &> $OUTPUT_IO
+sudo PATH="$MINGW_DIR/bin:$PATH" make install &> $OUTPUT_IO
+popd
+
+# TODO: Build bzip, python and boost
+
 popd
 
 ls -la $MINGW_DIR/lib
