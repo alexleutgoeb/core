@@ -17,3 +17,6 @@ script:
   - ./bootstrap.sh
   - ./configure CXXFLAGS=-fPIC LOCAL_PLUGIN_DIR=plugins --enable-python --enable-shared=no --enable-static-boost
   - make
+
+after_failure:
+  - cat config.log
