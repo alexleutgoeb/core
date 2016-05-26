@@ -19,7 +19,7 @@ set -e
 
 
 # List of required dependencies
-deps="git autoconf automake libtool pkg-config wget scons re2c python"
+deps="git autoconf automake libtool pkg-config wget scons re2c python boost boost-python"
 
 # Used to temporarily save missing dependencies
 missing_deps=""
