@@ -10,7 +10,7 @@ os:
 
 before_install:
   - sudo apt-get update -qq
-  - sudo apt-get -y install sed wget scons bison re2c libboost-dev libboost-python-dev python-dev
+  - sudo apt-get -y install libboost-all-dev
 
 script:
   - export PYTHON_BIN=python2.7
