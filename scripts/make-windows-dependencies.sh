@@ -79,9 +79,8 @@ popd
 
 # Install Python
 wget https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/4.9.2/threads-posix/dwarf/i686-4.9.2-release-posix-dwarf-rt_v3-rev1.7z
-sudo mkdir --mode=u+rwx,g+rs,g-w,o-rwx -p $MINGW_DIR/opt/bin
-sudo mkdir --mode=u+rwx,g+rs,g-w,o-rwx -p $MINGW_DIR/opt/include
 sudo 7z x i686-4.9.2-release-posix-dwarf-rt_v3-rev1.7z -o/opt mingw32/opt/include/python2.7 mingw32/opt/bin/python* -r
+sudo chmod -R 755 $MINGW_DIR/opt
 # Python hack for getting correct python config vars for auto ools
 sudo chmod +x $MINGW_DIR/opt/bin/python-config.sh
 sudo rm -f /usr/local/bin/python-config
@@ -103,7 +102,9 @@ echo "INCLUDE DIR:"
 ls -la $MINGW_DIR/include
 echo "LIB DIR:"
 ls -la $MINGW_DIR/lib
+echo "OPT DIR:"
+sudo ls -la $MINGW_DIR/opt
 echo "OPT BIN DIR:"
-ls -la $MINGW_DIR/opt/bin
+sudo ls -la $MINGW_DIR/opt/bin
 echo "PYTHON CONFIG:"
 python-config --ldflags
