@@ -1,4 +1,5 @@
 #!/bin/sh
+set -e
 
 ################################################################################
 # check-linux.sh
@@ -25,15 +26,10 @@ deps="sed git build-essential autoconf autotools-dev libtool wget scons bison re
 missing_deps=""
 
 # Check parameters
-# Check params
 while [ "$1" != "" ]; do
   case $1 in
     --install-dependencies )    install_deps=true
-    -h | --help )               usage
-                                exit
                                 ;;
-    * )                         usage
-                                exit 1
   esac
   shift
 done

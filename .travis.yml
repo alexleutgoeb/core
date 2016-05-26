@@ -14,13 +14,10 @@ matrix:
       env: BUILDTYPE=osx
 
 before_install:
-  - ./scripts/check-${BUILDTYPE}.sh
+  - ./scripts/check-${BUILDTYPE}.sh --install-dependencies
 
 script:
-  - export PYTHON_BIN=python2.7
-  - if [ $BUILDTYPE == linux ]; then ./bootstrap.sh; fi
-  - if [ $BUILDTYPE == linux ]; then ./configure CXXFLAGS=-fPIC LOCAL_PLUGIN_DIR=plugins --enable-python --enable-shared=no --enable-static-boost; fi
-  - if [ $BUILDTYPE == linux ]; then make; fi
+  - ./scripts/make-${BUILDTYPE}.sh --verbose
 
 after_failure:
-  - if [ $BUILDTYPE == linux ]; then cat config.log; fi
+  - cat config.log
