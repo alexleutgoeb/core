@@ -13,6 +13,7 @@ before_install:
   - sudo apt-get -qq -y install libboost-all-dev sed git build-essential autoconf autotools-dev libtool wget scons bison re2c python-dev libpython-all-dev libcurl4-openssl-dev libbz2-dev
 
 script:
+  - export PYTHON_BIN=python2.7
   - ./bootstrap.sh
   - ./configure CXXFLAGS=-fPIC LOCAL_PLUGIN_DIR=plugins --enable-python --enable-shared=no --enable-static-boost
   - make
