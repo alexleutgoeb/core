@@ -20,7 +20,7 @@ set -e
 
 
 # List of required dependencies
-deps="sed git build-essential autoconf libtool wget pkg-config scons bison re2c p7zip-full python-dev libxml2-dev libxslt1-dev ccze mingw64-x-binutils mingw64-x-gcc mingw64-x-runtime mingw64-x-zlib mingw64-x-openssl"
+deps="sed git build-essential autoconf libtool wget pkg-config scons bison re2c p7zip-full python-dev libxml2-dev libxslt1-dev ccze mingw32-x-binutils mingw32-x-gcc mingw32-x-runtime mingw32-x-zlib mingw32-x-openssl"
 
 # Used to temporarily save missing dependencies
 missing_deps=""
@@ -62,7 +62,7 @@ fi
 # Check for cross-compilation libs
 if [ "$install_deps" -eq 1 ]; then
   echo "Building Windows libraries from source..."
-  ./scripts/make-windows-dependencies.sh
+  ./scripts/make-windows-dependencies.sh --verbose
 else
   echo "Make sure to run make-windows-dependencies.sh before creating the build"
 fi

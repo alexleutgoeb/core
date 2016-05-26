@@ -38,12 +38,12 @@ while [ "$1" != "" ]; do
 done
 
 # Environment
-PREFIX=x86_64-w64-mingw32
-MINGW_DIR=/opt/mingw64
-export CC=$PREFIX-gcc
-export CXX=$PREFIX-g++
-export CPP=$PREFIX-cpp
-export RANLIB=$PREFIX-ranlib
+HOST_PREFIX=i686-w64-mingw32
+MINGW_DIR=/opt/mingw32
+export CC=$HOST_PREFIX-gcc
+export CXX=$HOST_PREFIX-g++
+export CPP=$HOST_PREFIX-cpp
+export RANLIB=$HOST_PREFIX-ranlib
 export PATH="$MINGW_DIR/bin:$PATH"
 
 pushd /tmp
@@ -52,13 +52,40 @@ pushd /tmp
 wget http://curl.haxx.se/download/curl-$CURL_VERSION.tar.gz &> $OUTPUT_IO
 tar xzf curl-$CURL_VERSION.tar.gz &> $OUTPUT_IO
 pushd curl-$CURL_VERSION
-./configure --host=$PREFIX --prefix=$MINGW_DIR --enable-static=yes --enable-shared=no --with-zlib=$MINGW_DIR --with-ssl=$MINGW_DIR &> $OUTPUT_IO
+./configure --host=$HOST_PREFIX --prefix=$MINGW_DIR --enable-static=yes --enable-shared=no --with-zlib=$MINGW_DIR --with-ssl=$MINGW_DIR &> $OUTPUT_IO
 make &> $OUTPUT_IO
 sudo PATH="$MINGW_DIR/bin:$PATH" make install &> $OUTPUT_IO
 popd
 
-# TODO: Build bzip, python and boost
+# Build bzip
+wget http://www.bzip.org/$BZIP_VERSION/bzip2-$BZIP_VERSION.tar.gz &> $OUTPUT_IO
+tar xzf bzip2-$BZIP_VERSION.tar.gz &> $OUTPUT_IO
+pushd bzip2-$BZIP_VERSION
+make &> $OUTPUT_IO
+sudo PATH="$MINGW_DIR/bin:$PATH" make install PREFIX=$MINGW_DIR &> $OUTPUT_IO
+popd
+
+# Install Python
+wget https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/4.9.2/threads-posix/dwarf/i686-4.9.2-release-posix-dwarf-rt_v3-rev1.7z
+7z x i686-4.9.2-release-posix-dwarf-rt_v3-rev1.7z -o/opt/ mingw32/opt/include/python2.7 mingw32/opt/bin/python* -r
+# Python hack for getting correct python config vars for auto ools
+chmod +x $MINGW_DIR/opt/bin/python-config.sh
+sudo rm -f /usr/local/bin/python-config
+sudo ln -s $MINGW_DIR/opt/bin/python-config.sh /usr/local/bin/python-config
+
+# Install Python mingw dll.a file for local python installation
+# (the one from mingw toolchain requires other dependencies)
+wget https://bitbucket.org/carlkl/mingw-w64-for-python/downloads/libpython-cp27-none-win32.7z
+7z x libpython-cp27-none-win32.7z
+mv libs/libpython27.dll.a $MINGW_DIR/lib/libpython2.7.a
+
+# TODO: Build Boost
 
 popd
 
+echo "LIB DIR:"
 ls -la $MINGW_DIR/lib
+echo "OPT BIN DIR:"
+ls -la $MINGW_DIR/opt/bin
+echo "PYTHON CONFIG:"
+python-config --ldflags
