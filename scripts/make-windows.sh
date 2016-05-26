@@ -70,6 +70,6 @@ cd $DIR/..
 sed -i "1s|^|62c62\n< env['CXX']            = 'g++'\n---\n> env['CXX']            = '$HOST_PREFIX-g++'\n68c68\n< env['LIBPATH']        = []\n---\n> env['LIBPATH']        = ['$MINGW_DIR/lib']\n|" buildclaspgringo/SConstruct.patch &> $OUTPUT_IO
 
 # Configure and build
-$HOME/mingw ./configure LOCAL_PLUGIN_DIR=plugins --enable-python --enable-static --disable-shared --enable-static-boost --host=$HOST_PREFIX LDFLAGS="-static -static-libgcc -static-libstdc++ -L$MINGW_DIR/lib" CFLAGS="-static -DBOOST_PYTHON_STATIC_LIB -DCURL_STATICLIB" CXXFLAGS="-static -DBOOST_PYTHON_STATIC_LIB -DCURL_STATICLIB" CPPFLAGS="-static -DBOOST_PYTHON_STATIC_LIB -DCURL_STATICLIB" &> $OUTPUT_IO
+$HOME/mingw ./configure LDFLAGS="-static -static-libgcc -static-libstdc++ -L$MINGW_DIR/lib" LOCAL_PLUGIN_DIR=plugins --enable-python --enable-static --disable-shared --enable-static-boost --with-boost=$MINGW_DIR --with-libcurl=$MINGW_DIR --host=$HOST_PREFIX CFLAGS="-static -DBOOST_PYTHON_STATIC_LIB -DCURL_STATICLIB" CXXFLAGS="-static -DBOOST_PYTHON_STATIC_LIB -DCURL_STATICLIB" CPPFLAGS="-static -DBOOST_PYTHON_STATIC_LIB -DCURL_STATICLIB" &> $OUTPUT_IO
 # see http://curl.haxx.se/docs/faq.html#Link_errors_when_building_libcur about CURL_STATICLIB define
 $HOME/mingw make &> $OUTPUT_IO
