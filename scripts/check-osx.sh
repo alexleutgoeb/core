@@ -19,11 +19,13 @@ set -e
 
 
 # List of required dependencies
-deps="git autoconf automake libtool pkg-config wget scons bison re2c python"
-# TODO: Bison is always found on Mac OS X, so we have to check for min version too!
+deps="git autoconf automake libtool pkg-config wget scons re2c python"
 
 # Used to temporarily save missing dependencies
 missing_deps=""
+# Always install bison, as the system version is outdated, probably check for
+# minimum version in future?
+missing_deps="$missing_deps bison"
 
 # Check parameters
 while [ -n "$1" ]; do
