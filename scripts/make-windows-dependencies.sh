@@ -93,10 +93,7 @@ wget https://bitbucket.org/carlkl/mingw-w64-for-python/downloads/libpython-cp27-
 7z x libpython-cp27-none-win32.7z
 sudo mv libs/libpython27.dll.a $MINGW_DIR/lib/libpython2.7.a
 
-# TODO: Build Boost
-
-popd
-
+# Checking python:
 echo "BIN DIR:"
 ls -la $MINGW_DIR/bin
 echo "INCLUDE DIR:"
@@ -107,3 +104,17 @@ echo "PYTHON CONFIG:"
 which python-config
 python-config --ldflags
 $MINGW_DIR/bin/python-config.sh --ldflags
+
+# Build Boost
+boost_file_version=`echo $BOOST_VERSION | sed -e "s/\./_/g"`
+wget http://sourceforge.net/projects/boost/files/boost/$BOOST_VERSION/boost_$boost_file_version.tar.gz &> $OUTPUT_IO
+tar xzf boost_$boost_file_version.tar.gz &> $OUTPUT_IO
+pushd boost_$boost_file_version
+./bootstrap.sh -without-libraries=python  &> $OUTPUT_IO
+# Set cross compiler and custom python path
+echo "using gcc : 4.8 : $HOST_PREFIX-g++ ;" > user-config.jam
+echo "using python : $PYTHON_VERSION : $MINGW_DIR/bin/python.exe : $MINGW_DIR/include/python2.7 : $MINGW_DIR/lib ;" >> user-config.jam
+./b2 -q --user-config=user-config.jam toolset=gcc target-os=windows threading=multi threadapi=win32 variant=release link=static runtime-link=static --without-context --without-coroutine install --prefix=$MINGW_DIR include=$MINGW_DIR/include  &> $OUTPUT_IO
+popd
+
+popd
