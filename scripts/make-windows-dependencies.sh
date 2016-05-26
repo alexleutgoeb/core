@@ -28,6 +28,11 @@ PYTHON_VERSION="2.7"
 OUTPUT_IO=/dev/null
 MINGW_DIR=/opt/mingw32
 HOST_PREFIX=i686-w64-mingw32
+export CC=$HOST_PREFIX-gcc
+export CXX=$HOST_PREFIX-g++
+export CPP=$HOST_PREFIX-cpp
+export RANLIB=$HOST_PREFIX-ranlib
+export PATH="$MINGW_DIR/bin:$PATH"
 
 # Check parameters
 while [ "$1" != "" ]; do
@@ -74,7 +79,9 @@ popd
 
 # Install Python
 wget https://sourceforge.net/projects/mingw-w64/files/Toolchains%20targetting%20Win32/Personal%20Builds/mingw-builds/4.9.2/threads-posix/dwarf/i686-4.9.2-release-posix-dwarf-rt_v3-rev1.7z
-sudo 7z x i686-4.9.2-release-posix-dwarf-rt_v3-rev1.7z -o/opt/ mingw32/opt/include/python2.7 mingw32/opt/bin/python* -r
+sudo mkdir --mode=u+rwx,g+rs,g-w,o-rwx -p $MINGW_DIR/opt/bin
+sudo mkdir --mode=u+rwx,g+rs,g-w,o-rwx -p $MINGW_DIR/opt/include
+sudo 7z x i686-4.9.2-release-posix-dwarf-rt_v3-rev1.7z -o/opt mingw32/opt/include/python2.7 mingw32/opt/bin/python* -r
 # Python hack for getting correct python config vars for auto ools
 sudo chmod +x $MINGW_DIR/opt/bin/python-config.sh
 sudo rm -f /usr/local/bin/python-config
@@ -90,6 +97,10 @@ sudo mv libs/libpython27.dll.a $MINGW_DIR/lib/libpython2.7.a
 
 popd
 
+echo "BIN DIR:"
+ls -la $MINGW_DIR/bin
+echo "INCLUDE DIR:"
+ls -la $MINGW_DIR/include
 echo "LIB DIR:"
 ls -la $MINGW_DIR/lib
 echo "OPT BIN DIR:"
