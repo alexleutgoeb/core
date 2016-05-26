@@ -6,7 +6,7 @@ set -e
 #
 # Author: Alex Leutgöb <alexleutgoeb@gmail.com>
 #
-# Run this script to check if all dependencies are met for building DLVHEX on
+# Run this script to check if all dependencies are met for building DLVHEX for
 # Ubuntu Linux.
 #
 # Parameters:

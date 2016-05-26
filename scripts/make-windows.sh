@@ -2,12 +2,12 @@
 set -e
 
 ################################################################################
-# make-linux.sh
+# make-windows.sh
 #
 # Author: Alex Leutgöb <alexleutgoeb@gmail.com>
 #
-# Run this script to build the DLVHEX binary for Linux. Make sure to call
-# check-linux.sh to check for missing dependencies before.
+# Run this script to cross-build the DLVHEX binary for Windows on Linux. Make
+# sure to call check-windows.sh to check for missing dependencies before.
 #
 # Parameters:
 #
@@ -38,10 +38,3 @@ export PYTHON_BIN=python$PYTHON_VERSION &> $OUTPUT_IO
 # Change into root dir of repo
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR/..
-
-# Create build files
-./bootstrap.sh &> $OUTPUT_IO
-
-# Configure and build
-./configure CXXFLAGS=-fPIC LOCAL_PLUGIN_DIR=plugins --enable-python --enable-shared=no --enable-static-boost &> $OUTPUT_IO
-make &> $OUTPUT_IO

@@ -7,7 +7,7 @@ set -e
 # Author: Alex Leutgöb <alexleutgoeb@gmail.com>
 #
 # Run this script to build the DLVHEX binary for Mac OS X. Make sure to call
-# check-osx.sh beforehand to check for missing dependencies.
+# check-osx.sh to check for missing dependencies before.
 #
 # Parameters:
 #
