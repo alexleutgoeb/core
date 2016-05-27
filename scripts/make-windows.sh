@@ -59,6 +59,9 @@ exec "$@"
 EOF
 chmod u+x $HOME/mingw
 
+# Use MinGW python config vars for auto tools
+hash -p $MINGW_DIR/bin/python-config.sh python-config
+
 # Change into root dir of repo
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
 cd $DIR/..
