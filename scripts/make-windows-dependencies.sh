@@ -103,10 +103,13 @@ echo "LIB DIR:"
 ls -la $MINGW_DIR/lib
 echo "LOCAL BIN DIR:"
 ls -la /usr/local/bin
-echo "PYTHON CONFIG:"
+echo "WHICH CONFIG:"
 which python-config
+echo "SYS CONFIG:"
 python-config --ldflags
+echo "LOCAL SYS CONFIG:"
 /usr/local/bin/python-config --ldflags
+echo "MINGW CONFIG:"
 $MINGW_DIR/bin/python-config.sh --ldflags
 
 # Build Boost
