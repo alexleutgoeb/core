@@ -28,6 +28,7 @@ PYTHON_VERSION="2.7"
 OUTPUT_IO=/dev/null
 MINGW_DIR=/opt/mingw32
 HOST_PREFIX=i686-w64-mingw32
+
 export CC=$HOST_PREFIX-gcc
 export CXX=$HOST_PREFIX-g++
 export CPP=$HOST_PREFIX-cpp
