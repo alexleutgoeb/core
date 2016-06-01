@@ -95,24 +95,6 @@ wget https://bitbucket.org/carlkl/mingw-w64-for-python/downloads/libpython-cp27-
 7z x libpython-cp27-none-win32.7z
 sudo mv libs/libpython27.dll.a $MINGW_DIR/lib/libpython2.7.a
 
-# Checking python:
-echo "BIN DIR:"
-ls -la $MINGW_DIR/bin
-echo "INCLUDE DIR:"
-ls -la $MINGW_DIR/include
-echo "LIB DIR:"
-ls -la $MINGW_DIR/lib
-echo "LOCAL BIN DIR:"
-ls -la /usr/local/bin
-echo "WHICH CONFIG:"
-which python-config
-echo "SYS CONFIG:"
-python-config --ldflags
-echo "LOCAL SYS CONFIG:"
-/usr/local/bin/python-config --ldflags
-echo "MINGW CONFIG:"
-$MINGW_DIR/bin/python-config.sh --ldflags
-
 # Build Boost
 boost_file_version=`echo $BOOST_VERSION | sed -e "s/\./_/g"`
 wget http://sourceforge.net/projects/boost/files/boost/$BOOST_VERSION/boost_$boost_file_version.tar.gz &> $OUTPUT_IO
