@@ -52,8 +52,8 @@ sed -i "" "s/libdlvhex2_base_la_LIBADD/#libdlvhex2_base_la_LIBADD/" src/Makefile
 # otherwise boost static libs are added to static lib and it won't link anymore!
 echo "MAKEFILE IS NOW:"
 pwd
-ls -la .
-cat src/Makefile
+ls -la src
+cat src/Makefile.am
 exit 1
 
 # Configure and build
