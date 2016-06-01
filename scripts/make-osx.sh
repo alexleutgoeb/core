@@ -51,6 +51,8 @@ sed -i "" "s/libdlvhex2_base_la_LIBADD/#libdlvhex2_base_la_LIBADD/" src/Makefile
 # Reason: In Makefile: libdlvhex2-base.la may not include$(libdlvhex2_base_la_LIBADD),
 # otherwise boost static libs are added to static lib and it won't link anymore!
 echo "MAKEFILE IS NOW:"
+pwd
+ls -la .
 cat src/Makefile
 exit 1
 
