@@ -50,11 +50,6 @@ cd $DIR/..
 sed -i "" "s/libdlvhex2_base_la_LIBADD/#libdlvhex2_base_la_LIBADD/" src/Makefile.am
 # Reason: In Makefile: libdlvhex2-base.la may not include$(libdlvhex2_base_la_LIBADD),
 # otherwise boost static libs are added to static lib and it won't link anymore!
-echo "MAKEFILE IS NOW:"
-pwd
-ls -la src
-cat src/Makefile.am
-exit 1
 
 # Configure and build
 ./configure LOCAL_PLUGIN_DIR=plugins --enable-python --enable-shared=no --enable-static-boost &> $OUTPUT_IO
