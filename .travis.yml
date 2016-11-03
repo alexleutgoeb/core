@@ -2,14 +2,14 @@ language: generic
 
 matrix:
   include:
-    - os: linux
-      sudo: required
-      dist: trusty
-      env: BUILDTYPE=linux
-    - os: linux
-      sudo: required
-      dist: trusty
-      env: BUILDTYPE=windows
+    # - os: linux
+    #   sudo: required
+    #   dist: trusty
+    #   env: BUILDTYPE=linux
+    # - os: linux
+    #   sudo: required
+    #   dist: trusty
+    #   env: BUILDTYPE=windows
     - os: osx
       env: BUILDTYPE=osx
 
