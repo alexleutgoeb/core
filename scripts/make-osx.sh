@@ -53,7 +53,8 @@ sed -i "" "s/libdlvhex2_base_la_LIBADD/#libdlvhex2_base_la_LIBADD/" src/Makefile
 
 # Configure and build
 ./configure LOCAL_PLUGIN_DIR=plugins --enable-python --enable-shared=no --enable-static-boost &> $OUTPUT_IO
-make -j || :
+
+make || :
 
 echo "LA FILE:"
 cat src/libdlvhex2-base.la
