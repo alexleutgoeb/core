@@ -23,9 +23,11 @@ deps="git autoconf automake libtool pkg-config wget scons re2c python boost-pyth
 
 # Used to temporarily save missing dependencies
 missing_deps=""
-# Always install bison, as the system version is outdated, probably check for
-# minimum version in future?
-missing_deps="$missing_deps bison"
+# Always install bison and libtool, as the system versions are outdated,
+# probably check for minimum version in future?
+missing_deps="$missing_deps bison libtool"
+# Defines if dependencies should be auto-installed
+install_deps=0
 
 # Check parameters
 while [ -n "$1" ]; do
